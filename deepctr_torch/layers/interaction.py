@@ -375,9 +375,9 @@ class InteractingLayer(nn.Module):
         values = torch.tensordot(inputs, self.W_Value, dims=([-1], [0]))
 
         # head_num None F D/head_num
-        querys = torch.stack(torch.split(querys, self.att_embedding_size, dim=2))
-        keys = torch.stack(torch.split(keys, self.att_embedding_size, dim=2))
-        values = torch.stack(torch.split(values, self.att_embedding_size, dim=2))
+        querys = torch.stack(torch.split(querys, self.att_embedding_size, dim=head_num))
+        keys = torch.stack(torch.split(keys, self.att_embedding_size, dim=head_num))
+        values = torch.stack(torch.split(values, self.att_embedding_size, dim=head_num))
 
         inner_product = torch.einsum('bnik,bnjk->bnij', querys, keys)  # head_num None F F
         if self.scaling:
